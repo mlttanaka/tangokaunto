@@ -34,20 +34,58 @@ def segment_words(unicode_text):
     return unfiltered_words
 
 
-# TODO: write a function (or functions) that filters out punctuation
-# for a more accurate word count.
+def isRealWord(word):
+    """
+    Returns true if a word is not found in the list of punctuaction 
+    characters.
+    """
+    punctuation_list = range(33, 63)  # some English punctuation
+    # some Japanese punctuation (Extend the list as you see fit.)
+    punctuation_list.extend(range(ord(u'\u3000'), ord(u'\u3020')))
+    punctuation_list.extend(range(ord(u'\uff00'), ord(u'\uff0f')))
+    punctuation_list.extend(range(ord(u'\uff10'), ord(u'\uff1f')))
+    punctuation_list.append(ord(u'\u30fb'))
+    
+    
+    if len(word) > 1:
+        return True
+    elif len(word) == 1 and ord(word) not in punctuation_list:
+        return True
+    else:
+        return False
+
+
+def filter_words(unfiltered_wordlist):
+    """
+    Filters out punctuation from an unfiltered list of words; returns
+    a more accurate wordlist.
+    """
+    filtered_wordlist = filter(isRealWord, unfiltered_wordlist)
+    return filtered_wordlist
 
 
 def main():
+    # Read the file
     unicode_text = read_unicode_file()
-    items = segment_words(unicode_text)
     
-    for item in items:
-        print item
+    # Get the entire list of words as defined by TinySegmenter.
+    unfiltered_wordlist = segment_words(unicode_text)
 
+    # Filter out punctuation from the list.
+    filtered_wordlist = filter_words(unfiltered_wordlist)
+    
+    # Print entire unfiltered word list & word count.
+    for index, word in enumerate(unfiltered_wordlist):
+        print index, word
     print '-' * 30
-    print "Unfiltered Word Count:", len(items)
+    print "Unfiltered Word Count:", len(unfiltered_wordlist)
+    print '\n'
+
+    # Print entire filtered word list & word count.
+    for index, word in enumerate(filtered_wordlist):
+        print index, word
     print '-' * 30
+    print "Filtered Word Count", len(filtered_wordlist)
 
 
 if __name__ == '__main__':
