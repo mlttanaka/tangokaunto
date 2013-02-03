@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Tangokaunto, "word count" in Japanese, reads Japanese text from an input file,
-splits the text into words (as defined by TinySegmenter), and prints out a 
+splits the text into words (as defined by TinySegmenter), and prints out a
 word count as well as all the word it segmented from the text.
 
 author:  mochipuff
@@ -36,7 +36,7 @@ def segment_words(unicode_text):
 
 def isRealWord(word):
     """
-    Returns true if a word is not found in the list of punctuaction 
+    Returns true if a word is not found in the list of punctuaction
     characters.
     """
     punctuation_list = range(33, 63)  # some English punctuation
@@ -45,8 +45,7 @@ def isRealWord(word):
     punctuation_list.extend(range(ord(u'\uff00'), ord(u'\uff0f')))
     punctuation_list.extend(range(ord(u'\uff10'), ord(u'\uff1f')))
     punctuation_list.append(ord(u'\u30fb'))
-    
-    
+
     if len(word) > 1:
         return True
     elif len(word) == 1 and ord(word) not in punctuation_list:
@@ -67,13 +66,13 @@ def filter_words(unfiltered_wordlist):
 def main():
     # Read the file
     unicode_text = read_unicode_file()
-    
+
     # Get the entire list of words as defined by TinySegmenter.
     unfiltered_wordlist = segment_words(unicode_text)
 
     # Filter out punctuation from the list.
     filtered_wordlist = filter_words(unfiltered_wordlist)
-    
+
     # Print entire unfiltered word list & word count.
     for index, word in enumerate(unfiltered_wordlist):
         print index, word
@@ -85,7 +84,7 @@ def main():
     for index, word in enumerate(filtered_wordlist):
         print index, word
     print '-' * 30
-    print "Filtered Word Count", len(filtered_wordlist)
+    print "Filtered Word Count:", len(filtered_wordlist)
 
 
 if __name__ == '__main__':
